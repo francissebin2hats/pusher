@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserNotification;
 use App\Models\User;
 use App\Notifications\UserCreated;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,11 @@ Route::get('/dashboard', function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/user/{user}', function (User $user) {
-    $user->notify(new UserCreated($user));
+Route::get('/sender/{user}', function (User $user) {
+    // $user->notify(new UserCreated($user));
+    event(new UserNotification($user));
+});
+
+Route::get('/receiver', function () {
+    return view('receiver');
 });
